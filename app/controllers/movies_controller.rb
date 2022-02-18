@@ -8,14 +8,23 @@ class MoviesController < ApplicationController
   
     def index
       # sort related
-      @sort = params[:sort_id]
+      @sort = params[:sort_id] || session[:sort_id]
       @title_header = params[:sort_id]=="title" ? "hilite bg-warning" : ""
       @release_date_header = params[:sort_id] == "release_date" ? "hilite bg-warning" : ""
+      session[:sort_id] = @sort
       
       # rating related
       @all_ratings = Movie.ratings
-      @rating_checked = params[:ratings].nil? ? @all_ratings : params[:ratings].keys
+      checked_list = params[:ratings] || session[:ratings]
+      @rating_checked = checked_list.nil? ? @all_ratings : checked_list.keys
+      session[:ratings] = checked_list
+      
       @movies = Movie.with_ratings(@rating_checked).order(@sort)
+      if ( params[:sort_id].nil? && !(session[:sort_id].nil?) ) || ( params[:ratings].nil? && !(session[:ratings].nil?) )
+        flash.keep
+        redirect_to movies_path(sort_id: session[:sort_id], ratings: session[:ratings])
+      end
+      
     end
   
     def new
