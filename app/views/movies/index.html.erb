@@ -6,9 +6,9 @@
 <table class="table table-striped col-md-12" id="movies">
   <thead>
     <tr>
-      <th>Movie Title</th>
+      <th><a href="/movies/sorted_by/<%= @order[:title] %>", id="title_header", class="<%= @title_header %>">Movie Title</a></th>
       <th>Rating</th>
-      <th>Release Date</th>
+      <th><a href="/movies/sorted_by/<%= @order[:release_date] %>", id="release_date_header", class="<%= @release_date_header %>">Release Date</a></th>
       <th>More Info</th>
     </tr>
   </thead>
